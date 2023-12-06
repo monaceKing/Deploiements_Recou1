@@ -1,20 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Détails</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{asset('Css/monStyle.css')}}">
-{{-- DataTable --}}
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.jqueryui.min.css">
+@extends('layouts.app')
 
-</head>
-<body>
-<div class="container">
-    <ul class="nav justify-content-center p-3 bg-light">
+@section('content')
+<div class="py-5" id="moa">
+    {{-- <ul class="nav justify-content-center p-3 bg-light">
         <li class="nav-item">
             <button id="btnFiltrerNonVide" class="btn btn-secondary m-2">Solde Lettré</button> 
         </li>
@@ -24,127 +12,120 @@
         <li class="nav-item">
             <button id="btnEffacerFiltre" class="btn btn-warning m-2">Effacer le filtre</button>
         </li>
-      </ul>
-
-      <div class="text-center">
-        <div class="py-5">
-           <div>
-           {{-- totalDebit --}}
-            <span id="totalDebit1" class="fw-bolder text-primary" style="display: inline-block;"></span>
-           {{-- totalCredit --}}
-            <span id="totalCredit" class="fw-bolder text-success" style="display: inline-block;"></span>
-            {{-- Solde total --}}
-            <span id="soldeTotal" class="fw-bolder text-success" style="display: inline-block;"></span>
-            </div>
-            
-            <!-- Ajoutez deux boutons pour le filtrage -->
-            <table id="myTable" class="table table-striped">
-                <thead class="table-light">
-                    <p id="totalDebit" class="justify-content-center fw-bolder"></p>
-                    <tr>
-                        <th>EC_RefPiece</th>
-                        <th>EC_Intitule</th>
-                        <th>EC_Echeance</th>
-                        <th>N°?</th>
-                        <th>Débit</th>
-                        <th class="hidden"></th>
-                        <th>Crédit</th>
-                        <th class="hidden"></th>
-                    </tr>
-                </thead>
-        
-                <tbody>
-                    @foreach ($data as $donnee)
+      </ul> --}}
+    <div class="row justify-content">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">{{ __("Tableau de détails") }}</div>
+                <div class="card-body">
+                    {{-- <input type="text" id="search" placeholder="Rechercher par CO_No"> --}}
+        <table class="table table-striped" id="myTable">
+            <tr>
+                <th>Ligne</th>
+                <th>Nom</th>
+                <th>Téléphone</th>
+                <th>Email</th>
+                <th>N° facture</th>
+                <th>Libellé</th>
+                <th>Echeance</th>
+                <th>Rétard</th>
+                <th>Débit</th>
+                <th>Crédit</th>
+            </tr>
+            @php
+            $totalDebit = 0;
+            $totalCredit = 0;
+            @endphp
+            @foreach ($data as $donnee)
                     
-                    @php
-                        $amount = $donnee->Ec_Montant;
-                        $format = number_format($amount,0, ' ', ' ');
-                    @endphp
-    
-                    <tr>
-                        
-                        <td>{{$donnee->EC_RefPiece}}</td>
-                        <td>{{$donnee->EC_Intitule}}</td>
-                        <td>{{(new DateTime($donnee->EC_Echeance))->format('d/m/Y')}}</td>
-                        <td style="color:chartreuse">
-                            @php
-                                $date1 = new DateTime($donnee->EC_Echeance); //date d'echéance
-    
-                                $date2 = new DateTime(); //Date d'aujourd'hui
-    
-                                $intervalle = $date2->diff($date1);
-    
-                                $nj = $intervalle->format('%a');
-    
-                                
-                                if ($date1 > $date2) {
-                                    echo (-$nj);
-                                }else{
-                                    echo ($nj);
-                                }
-                            @endphp
-                        </td>
-                        <td>
-                            {{-- Débit --}}
-                            @php
-                               if ($donnee->EC_sens <= 0) {
-                                    echo $format;
-                               } else {
-                                echo 0;
-                               }
-                            @endphp
-                        </td>
-                        <td class="hidden">
-                            {{-- Calcul débit --}}
-                            @php
-                               if ($donnee->EC_sens <= 0) {
-                                    echo $donnee->Ec_Montant;
-                               } else {
-                                echo 0;
-                               }
-                            @endphp
-    
-                        </td>
-    
-                        <td>
-                            {{-- Crédit --}}
-                            @php
-                               if ($donnee->EC_sens > 0) {
-                                    echo $format;
-                               } else {
-                                echo 0;
-                               }
-                            @endphp
-                        </td>
+            @php
+                $amount = $donnee->Ec_Montant;
+                $format = number_format($amount,0, ' ', ' ');
+            @endphp
 
-                        <td class="hidden">
-                            {{-- Calcul crédit --}}
-                            @php
-                               if ($donnee->EC_sens > 0) {
-                                    echo $donnee->Ec_Montant;
-                               } else {
-                                echo 0;
-                               }
-                            @endphp
-    
-                        </td>
-                    </tr>
-                        @endforeach
-            </tbody>
-            </table> 
-        </div> 
+            <tr>
+                <td>{{ $donnee->CO_Nom }}</td>
+                <td>{{ $donnee->CT_Intitule }}</td>
+                <td>{{ $donnee->CT_Telephone }}</td>
+                <td>justeamour@gmail.com</td>
+                <td>{{$donnee->EC_RefPiece}}</td>
+                <td>{{$donnee->EC_Intitule}}</td>
+                <td>{{(new DateTime($donnee->EC_Echeance))->format('d/m/Y')}}</td>
+                <td style="color:rgb(4, 255, 0)">
+                    @php
+                        $date1 = new DateTime($donnee->EC_Echeance); //date d'echéance
+
+                        $date2 = new DateTime(); //Date d'aujourd'hui
+
+                        $intervalle = $date2->diff($date1);
+
+                        $nj = $intervalle->format('%a');
+
+                        
+                        if ($date1 > $date2) {
+                            echo (-$nj);
+                        }else{
+                            echo ($nj);
+                        }
+                    @endphp
+                </td>
+                <td>
+                    {{-- Débit --}}
+                    @php
+                       if ($donnee->EC_sens <= 0) {
+                            echo $format;
+                       } else {
+                        echo 0;
+                       }
+                    @endphp
+                </td>
+                <td class="hidden">
+                    {{-- Calcul débit --}}
+                    @php
+                       $debitValue = ($donnee->EC_sens <= 0) ? $donnee->Ec_Montant : 0;
+                       $totalDebit += $debitValue;
+                    @endphp
+
+                </td>
+
+                <td>
+                    {{-- Crédit --}}
+                    @php
+                       if ($donnee->EC_sens > 0) {
+                            echo $format;
+                       } else {
+                        echo 0;
+                       }
+                    @endphp
+                </td>
+
+                <td class="hidden">
+                {{-- Calcul crédit --}}
+                    @php
+                        $creditValue = ($donnee->EC_sens > 0) ? $donnee->Ec_Montant : 0;
+                        $totalCredit += $creditValue;
+                    @endphp
+                </td>
+            </tr>
+                @endforeach
+        </table>
+        <div id="error-message" style="color: red; display: none;">Aucun résultat trouvé.</div>
+                </div>
+            </div>
         </div>
     </div>
+    {{-- Affichage des totaux dans des balises <span> --}}
+    <div class="total-container">
+        <?php
+            // Calcul du solde
+            $solde = $totalDebit - $totalCredit;    
+        ?>
+        <span class="total-debit">Total Débit : {{ number_format($totalDebit, 0, ' ', ' ') }}</span>
+        <span class="total-credit">Total Crédit : {{ number_format($totalCredit, 0, ' ', ' ') }}</span>
+        <span class="solde">Solde : {{ number_format($solde, 0, ' ', ' ') }}</span>
+    </div>
 </div>
-
-    {{--Bootstrap--}}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    {{-- DataTable --}}
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.jqueryui.min.js"></script>
-
-{{--Appel script personnalisé--}}
-<script src="{{asset('Js/monScript.js')}}"></script>
-</body>
-</html>
+<div>
+    <script src="{{asset('Js/king.js')}}"></script>
+</div>
+@endsection

@@ -1,16 +1,24 @@
-body{
-    background-color: rgb(255, 255, 255);
+body, html {
+  margin: 0;
+  padding: 0;
 }
 
 .hidden {
   display: none;
 }
-  
 
-  
+.total-container {
+  font-size: 18px; /* Taille de police */
+  margin-top: 10px; /* Espacement vers le haut */
+}
 
+.total-debit,
+.total-credit,
+.solde {
+  margin-right: 20px; /* Espacement horizontal entre les totaux */
+  font-weight: bold;
+}
 
-
-
-
-
+#moa{
+  margin: 10px;
+}

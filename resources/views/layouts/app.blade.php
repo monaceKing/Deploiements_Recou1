@@ -81,5 +81,6 @@
     </div>
  {{--Appel script personnalisé--}}
  <script src="{{asset('Js/fusion.js')}}"></script>
+ <link rel="stylesheet" href="{{asset('Css/monStyle.css')}}">
 </body>
 </html>

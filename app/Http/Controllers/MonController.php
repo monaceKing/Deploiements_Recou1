@@ -76,10 +76,10 @@ class MonController extends Controller
             'F_ECRITUREC.EC_RefPiece',
             'F_ECRITUREC.EC_Lettre',
         )
-        ->where('F_ECRITUREC.EC_Lettre','=', 0)
         ->where('F_ECRITUREC.CT_Num', '=', $CT_Num)
+        ->where('F_ECRITUREC.EC_Lettre','=', 0)
         ->where('F_ECRITUREC.CT_Num', 'like', 'CL%')
-        ->whereYear('EC_Echeance','2023')
+        // ->whereYear('EC_Echeance','2023')
         ->get();
         return view('details', compact('data'));
     }
