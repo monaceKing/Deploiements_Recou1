@@ -50,7 +50,7 @@ class User extends Authenticatable
 
     //Liaisons avec le model Portefeuille
     public function portefeuilles(){
-        return $this->belongsToMany(Portefeuille::class);
+        return $this->belongsToMany(Portefeuille::class, 'portefeuille_user', 'user_id', 'portefeuille_id');
     }
 
     public function isAdmin(){
@@ -63,7 +63,12 @@ class User extends Authenticatable
     }
     
 
-
+    public function portefeuillesDisponibles()
+{
+    return Portefeuille::whereDoesntHave('users', function ($query) {
+        $query->where('user_id', '<>', $this->id);
+    })->get();
+}
 
 
 }

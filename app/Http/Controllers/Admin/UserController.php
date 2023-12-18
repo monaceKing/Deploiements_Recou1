@@ -49,16 +49,26 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(User $user)
-    {
-        //Verification si l'utilisateur est un admin ou pas 
-        if (Gate::denies('edit-users')) {
-            return redirect()->back();
-        }
-
-        $portefeuilles = Portefeuille::all();
-        $roles = Role::all();
-        return view("admin.users.edit", compact("user","roles", "portefeuilles"));
+{
+    // Vérification si l'utilisateur est un admin ou pas 
+    if (Gate::denies('edit-users')) {
+        return redirect()->back();
     }
+
+    // Récupérer tous les portefeuilles
+    $portefeuilles = Portefeuille::all();
+
+    // Récupérer les rôles
+    $roles = Role::all();
+
+    // Récupérer les portefeuilles attribués à l'utilisateur
+    $portefeuillesUtilisateur = $user->portefeuilles;
+
+    // Exclure les portefeuilles déjà attribués à d'autres utilisateurs
+    $portefeuillesDisponibles = $user->portefeuillesDisponibles();
+    // dd($portefeuillesDisponibles);
+    return view("admin.users.edit", compact("user", "roles", "portefeuillesDisponibles", "portefeuillesUtilisateur"));
+}
 
     /**
      * Update the specified resource in storage.

@@ -11,6 +11,6 @@ class Portefeuille extends Model
 
     //laison avec le model User
     public function users(){
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'portefeuille_user', 'portefeuille_id', 'user_id');
     }
 }

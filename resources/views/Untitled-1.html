@@ -1,147 +1,155 @@
+<!-- home.blade.php -->
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Détails</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{asset('Css/monStyle.css')}}">
-{{-- DataTable --}}
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.jqueryui.min.css">
+@extends('layouts.app')
 
-</head>
-<body>
-<div class="container">
-    <ul class="nav justify-content-center p-3 bg-light">
-        <li class="nav-item">
-            <button id="btnFiltrerNonVide" class="btn btn-secondary m-2">Solde Lettré</button> 
-        </li>
-        <li class="nav-item">
-            <button id="btnFiltrerVide" class="btn btn-primary m-2">Solde non Lettré</button>
-        </li>
-        <li class="nav-item">
-            <button id="btnEffacerFiltre" class="btn btn-warning m-2">Effacer le filtre</button>
-        </li>
-      </ul>
+@section('content')
+    <div class="container">
+        <h1>Données de l'utilisateur connecté</h1>
 
-      <div class="text-center">
-        <div class="py-5">
-           <div>
-           {{-- totalDebit --}}
-            <span id="totalDebit1" class="fw-bolder text-primary" style="display: inline-block;"></span>
-           {{-- totalCredit --}}
-            <span id="totalCredit" class="fw-bolder text-success" style="display: inline-block;"></span>
-            </div>
-            
-            <!-- Ajoutez deux boutons pour le filtrage -->
-            <table id="myTable" class="table table-striped">
-                <thead class="table-light">
-                    <p id="totalDebit" class="justify-content-center fw-bolder"></p>
+        @if(count($data) > 0)
+            <table class="table">
+                <thead>
                     <tr>
-                        <th>EC_RefPiece</th>
+                        {{-- <th>CO_No</th> --}}
+                        <th>CT_Intitule</th>
+                        <th>CT_Telephone</th>
+                        <th>CT_EMail</th>
+                        <th>CO_Nom</th>
+                        {{-- <th>CT_Num</th> --}}
                         <th>EC_Intitule</th>
-                        <th>EC_Echeance</th>
-                        <th>N°?</th>
-                        <th>Débit</th>
-                        <th class="hidden"></th>
-                        <th>Crédit</th>
-                        <th class="hidden"></th>
+                        {{-- <th>EC_sens</th> --}}
+                        {{-- <th>Ec_Montant</th> --}}
+                        {{-- <th>EC_Echeance</th> --}}
+                        <th>EC_RefPiece</th>
+                        {{-- <th>EC_Lettre</th> --}}
+                        {{-- <th>TotalDébit</th>
+                        <th>TotalCrédit</th> --}}
+                        <th>Solde</th>
                     </tr>
                 </thead>
-        
                 <tbody>
-                    @foreach ($data as $donnee)
-                    
                     @php
-                        $amount = $donnee->Ec_Montant;
-                        $format = number_format($amount,0, ' ', ' ');
+                        $currentCTNum = null;
+                        $totalDebit = 0;
+                        $totalCredit = 0;
+                        $currentSolde = 0;
                     @endphp
-    
-                    <tr>
-                        
-                        <td>{{$donnee->EC_RefPiece}}</td>
-                        <td>{{$donnee->EC_Intitule}}</td>
-                        <td>{{(new DateTime($donnee->EC_Echeance))->format('d/m/Y')}}</td>
-                        <td style="color:chartreuse">
-                            @php
-                                $date1 = new DateTime($donnee->EC_Echeance); //date d'echéance
-    
-                                $date2 = new DateTime(); //Date d'aujourd'hui
-    
-                                $intervalle = $date2->diff($date1);
-    
-                                $nj = $intervalle->format('%a');
-    
-                                
-                                if ($date1 > $date2) {
-                                    echo (-$nj);
-                                }else{
-                                    echo ($nj);
-                                }
-                            @endphp
-                        </td>
-                        <td>
-                            {{-- Débit --}}
-                            @php
-                               if ($donnee->EC_sens <= 0) {
-                                    echo $format;
-                               } else {
-                                echo 0;
-                               }
-                            @endphp
-                        </td>
-                        <td class="hidden">
-                            {{-- Calcul débit --}}
-                            @php
-                               if ($donnee->EC_sens <= 0) {
-                                    echo $donnee->Ec_Montant;
-                               } else {
-                                echo 0;
-                               }
-                            @endphp
-    
-                        </td>
-    
-                        <td>
-                            {{-- Crédit --}}
-                            @php
-                               if ($donnee->EC_sens > 0) {
-                                    echo $format;
-                               } else {
-                                echo 0;
-                               }
-                            @endphp
-                        </td>
 
-                        <td class="hidden">
-                        {{-- Calcul crédit --}}
+                    @foreach($data as $item)
+                        @if($currentCTNum !== $item->CT_Num)
+                            @if($currentCTNum !== null)
+                                {{-- <td>{{ $totalDebit }}</td>
+                                <td>{{ $totalCredit }}</td> --}}
+                                <td>{{ $totalDebit - $totalCredit }}</td>
+                                </tr>
+                            @endif
+
+                            <tr>
+                                {{-- <td>{{ $item->CO_No }}</td> --}}
+                                <td>{{ $item->CT_Intitule }}</td>
+                                <td>{{ $item->CT_Telephone }}</td>
+                                <td>{{ $item->CT_EMail }}</td>
+                                <td>{{ $item->CO_Nom }}</td>
+                                {{-- <td>{{ $item->CT_Num }}</td> --}}
+                                <td>{{ $item->EC_Intitule }}</td>
+                                {{-- <td>{{ $item->EC_sens }}</td> --}}
+                                {{-- <td>{{ $item->Ec_Montant }}</td> --}}
+                                {{-- <td>{{ $item->EC_Echeance }}</td> --}}
+                                <td>{{ $item->EC_RefPiece }}</td>
+                                {{-- <td>{{ $item->EC_Lettre }}</td> --}}
+
+                                @php
+                                    // Réinitialise les totaux pour la nouvelle facture
+                                    $totalDebit = 0;
+                                    $totalCredit = 0;
+                                    $currentSolde = 0;
+                                    $currentCTNum = $item->CT_Num;
+
+                                    // Vérifie le EC_sens pour déterminer le débit ou le crédit
+                                    if ($item->EC_sens > 0) {
+                                        $totalCredit += $item->Ec_Montant;
+                                    } else {
+                                        $totalDebit += $item->Ec_Montant;
+                                    }
+                                    $currentSolde += $item->Ec_Montant;
+                                @endphp
+                        @else
+                            <!-- Ajoutez simplement le montant à la facture existante -->
                             @php
-                                if ($donnee->EC_sens > 0) {
-                                    echo $donnee->Ec_Montant;
+                                // Vérifie le EC_sens pour déterminer le débit ou le crédit
+                                if ($item->EC_sens > 0) {
+                                    $totalCredit += $item->Ec_Montant;
                                 } else {
-                                        echo 0;
-                                       }
+                                    $totalDebit += $item->Ec_Montant;
+                                }
+                                $currentSolde += $item->Ec_Montant;
                             @endphp
-                        </td>
-                    </tr>
-                        @endforeach
-            </tbody>
-            </table> 
-        </div> 
-        </div>
-    </div>
-</div>
+                        @endif
+                    @endforeach
 
-{{--Bootstrap--}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-{{-- DataTable --}}
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.jqueryui.min.js"></script>
-{{--Appel script personnalisé--}}
-<script src="{{asset('Js/monScript.js')}}"></script>
-</body>
-</html>
+                    <!-- Affichez les totaux pour la dernière facture -->
+                    {{-- <td>{{ $totalDebit }}</td>
+                    <td>{{ $totalCredit }}</td> --}}
+                    <td>{{ $totalDebit - $totalCredit }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        @else
+            <p>Aucune donnée disponible.</p>
+        @endif
+    </div>
+@endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

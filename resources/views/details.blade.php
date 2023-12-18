@@ -33,6 +33,7 @@
                 <th>Crédit</th>
             </tr>
             @php
+            $currentCTNum = null;
             $totalDebit = 0;
             $totalCredit = 0;
             @endphp

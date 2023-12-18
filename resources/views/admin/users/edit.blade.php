@@ -54,12 +54,13 @@
                             @endforeach
 <hr>
                             <h4 class="fw-bold">Portefeuilles</h4>
-                                @foreach ($portefeuilles as $portefeuille)
+                                @foreach ($portefeuillesDisponibles as $portefeuille)
                                     <div class="form-group form-check">
                                         <input type="checkbox" class="form-check-input" name="portefeuilles[]" value="{{ $portefeuille->id }}" id="portefeuille_{{ $portefeuille->id }}" {{ in_array($portefeuille->id, $user->portefeuilles->pluck('id')->toArray()) ? 'checked' : '' }}>
                                         <label for="portefeuille_{{ $portefeuille->id }}" class="form-check-label">{{ $portefeuille->name }}</label>
                                     </div>
                                 @endforeach
+
                         </div>                    
                         <button type="submit" class="btn btn-primary">Modifier</button>
                     </form>
