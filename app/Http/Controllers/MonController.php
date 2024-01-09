@@ -7,9 +7,9 @@ use App\Models\ModelCompteT;
 use App\Models\ModelCollaborateurs;
 use App\Models\Portefeuille;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+// use Barryvdh\DomPDF\Facade as PDF;
+use PDF;
 
 class MonController extends Controller
 {
@@ -46,14 +46,6 @@ class MonController extends Controller
 
     
     
-
-    // public function details($CT_Num){
-    //     $show = MonModel::select('JM_Date', 'JO_Num', 'CT_Num', 'EC_RefPiece', 'EC_Intitule', 'CG_Num', 'EC_Echeance', 'EC_Sens', 'EC_Montant', 'EC_Lettrage')
-    //     ->where('CT_Num','=', $CT_Num)
-    //     ->whereYear('EC_Echeance','2023')
-    //     ->get();
-    //     return view('details', compact('show'));
-    // }
 
     public function details($CT_Num){
         $data = DB::table('F_ECRITUREC')
@@ -117,6 +109,43 @@ class MonController extends Controller
     
         return "Mise à jour de la colonne name de la table Portefeuille.";
     }
+
+
+    // public function imprimer($CT_Num){
+    //     $users = DB::table('F_ECRITUREC')
+    //     ->join('F_COMPTET', 'F_ECRITUREC.CT_Num', '=', 'F_COMPTET.CT_Num')
+    //     ->join('F_COLLABORATEUR', 'F_COMPTET.CO_No', '=', 'F_COLLABORATEUR.CO_No')
+    //     ->join('portefeuilles', 'F_COLLABORATEUR.CO_Nom', '=', 'portefeuilles.name')
+    //     ->join('portefeuille_user', 'portefeuilles.id', '=', 'portefeuille_user.portefeuille_id')
+    //     ->join('users', 'portefeuille_user.user_id', '=', 'users.id')
+    //     ->select(
+    //         'F_COMPTET.CO_No',
+    //         'F_COMPTET.CT_Intitule',
+    //         'F_COMPTET.CT_Telephone',
+    //         'F_COMPTET.CT_EMail',
+    //         'F_COLLABORATEUR.CO_Nom',
+    //         'F_ECRITUREC.CT_Num',
+    //         'F_ECRITUREC.EC_Intitule',
+    //         'F_ECRITUREC.EC_sens',
+    //         'F_ECRITUREC.Ec_Montant',
+    //         'F_ECRITUREC.EC_Echeance',
+    //         'F_ECRITUREC.EC_RefPiece',
+    //         'F_ECRITUREC.EC_Lettre',
+    //     )
+    //     ->where('F_ECRITUREC.CT_Num', '=', $CT_Num)
+    //     ->where('F_ECRITUREC.EC_Lettre','=', 0)
+    //     ->where('F_ECRITUREC.CT_Num', 'like', 'CL%')
+    //     // ->whereYear('EC_Echeance','2023')
+    //     ->get()
+    //     ->toArray();
+
+    //     view()->share('users', $users);
+    //     $pdf = PDF::loadView('pdf', compact('users'));
+    //     return $pdf->download('pdf_file.pdf');
+
+    //     // return view('pdf', compact('users'));
+
+    // }
     
 }
 

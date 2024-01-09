@@ -1,0 +1,134 @@
+    .hidden-print {
+        display: none;
+    }
+
+    .total-container {
+        margin-top: 20px;
+    }
+
+    .total-debit,
+    .total-credit,
+    .solde {
+        font-weight: bold;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        background-color: #f2f2f2;
+        padding: 10px;
+        margin-bottom: 20px;
+        display: none;
+    }
+
+    .header-left, .header-right {
+        flex: 1;
+    }
+
+    .imprimer-bouton {
+    display: block;
+    }
+
+
+
+    @media print {
+            /*Masquer les commentaire*/
+            th:nth-child(10), td:nth-child(12) {
+                display: none;
+            }
+
+            /*Masquer les checkbox*/
+            th:nth-child(11), td:nth-child(13) {
+            display: none;
+            }
+
+            /*Masquer l'échaéance*/
+            td:nth-child(6), th:nth-child(6) {
+            display: none;
+            }
+
+            /*Masquer les lignes*/
+            td:nth-child(1), th:nth-child(1) {
+            display: none;
+            }
+
+            /* Rétablir le premier th dans le tableau avec la classe "table-ct" à l'impression */
+            .table-ct th:nth-child(1),
+            .table-ct td:nth-child(1) {
+            display: table-cell;
+            }
+
+        
+            .table-container {
+            display: block;
+        }
+
+        .header{
+            display: block;
+        }
+
+        .imprimer-bouton {
+            display: none;
+        }
+
+            body {
+                font-family: Arial, sans-serif;
+            }
+
+            .header-left,
+            .header-right {
+                float: left;
+            }
+
+            .header {
+                width: 100%;
+                overflow: hidden;
+                margin-bottom: 20px;
+            }
+
+            .header-left p,
+            .header-right p {
+                margin: 0;
+            }
+
+            .table-container {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+
+            .total {
+                font-weight: bold;
+            }
+
+            .header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .header-left, .header-right {
+            flex: 1;
+        }
+
+
+    }
+
+
+    .retard{
+        font-weight: bold;
+    }

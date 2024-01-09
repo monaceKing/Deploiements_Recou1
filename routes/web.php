@@ -27,6 +27,8 @@ Route::get('/faux',[MonController::class, 'faux'])->name('faux');
 
 Route::get('/details/{CT_Num}', [MonController::class, 'details']);
 
+Route::get('/imprimer/{CT_Num}', [MonController::class, 'imprimer']);
+
 Route::get('/time', [FauxController::class, 'time']);
 
 Route::get('/fusion', [MonController::class,'fusion']);

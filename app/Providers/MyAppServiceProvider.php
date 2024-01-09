@@ -12,16 +12,18 @@ class MyAppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Enregistrez le contrôleur en tant que singleton dans le conteneur de services
+        $this->app->singleton(MonController::class, function ($app) {
+            return new MonController();
+        });
     }
 
     /**
      * Bootstrap services.
      */
-    public function boot(): void
+    public function boot(MonController $monController): void
     {
-        //
-        $monController = new MonController();
+        // Utilisez l'instance injectée de MonController
         $monController->peuplerPortefeuilleAvecCO_No();
     }
 }
