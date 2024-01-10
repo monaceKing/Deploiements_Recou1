@@ -4,7 +4,13 @@
 
 <link rel="stylesheet" href="{{asset('Css/details.css')}}">
 
+
 <div id="moa">
+
+    <div id="alertMessage" class="alert-message">
+        <!-- Le contenu du message d'alerte sera inséré ici -->
+    </div>
+    
 
     <div class="header">
         <div class="header-left">
@@ -55,8 +61,8 @@
                         <th>Rétard</th>
                         <th class="col-2">Débit</th>
                         <th class="col-2">Crédit</th>
-                        <th>Commentaire</th>
-                        <th class="col-2">Check-box</th>
+                        <th>Action</th>
+                        <th class="col-2">Message</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,11 +76,11 @@
                             $amount = $donnee->Ec_Montant;
                             $format = number_format($amount, 0, ' ', ' ');
                         @endphp
-                        <tr>
+                        <tr  data-ct-num="{{ $donnee->CT_Num }}">
                             <td>{{ $donnee->CO_Nom }}</td>
                             {{-- <td>{{ $donnee->CT_Intitule }}</td> --}}
                             <td>{{ $donnee->CT_Telephone }}</td>
-                            <td>justeamour@gmail.com</td>
+                            <td>{{ !empty($donnee->CT_EMail) ? $donnee->CT_EMail : 'emailClient@gmail.com' }}</td>
                             <td>{{ $donnee->EC_RefPiece }}</td>
                             <td>{{ $donnee->EC_Intitule }}</td>
                             <td>{{ (new DateTime($donnee->EC_Echeance))->format('d/m/Y') }}</td>
@@ -123,18 +129,53 @@
                                 @endphp
                             </td>
                             <td>
-                                <textarea name="" id="" cols="15" rows="1"></textarea>
-                            </td>
+                                <form action="{{ route('enregistrer_ligne') }}"  method="post">
+                                    @csrf
+                                    <input type="hidden" name="id_agent" value="{{ auth()->user()->id }}">
+                                    <input type="hidden" name="idClient" value="{{ $donnee->CT_Num }}">
+                                    <input type="hidden" name="ligne" value="{{ $donnee->CO_Nom }}">
+                                    <input type="hidden" name="telephone" value="{{ $donnee->CT_Telephone }}">
+                                    <input type="hidden" name="email" value="{{ !empty($donnee->CT_EMail) ? $donnee->CT_EMail : 'emailClient@gmail.com' }}">
+                                    <input type="hidden" name="num_facture" value="{{ $donnee->EC_RefPiece }}">
+                                    <input type="hidden" name="libelle" value="{{ $donnee->EC_Intitule }}">
+                                    <input type="hidden" name="echeance" value="{{ $donnee->EC_Echeance }}">
+                                    <input type="hidden" name="debit" value="{{ $totalDebit }}">
+                                    <input type="hidden" name="credit" value="{{ $totalCredit }}">
+                                    <button type="submit" class="btn btn-primary">Recouvre</button>
+                                </form>
+                            </td>     
                             <td>
-                                <input type="checkbox" name="" id="">
-                            </td>
+                                <form action="{{ route('enregistrer_commentaire') }}"  method="post" class="mx-5">
+                                    @csrf
+                                    <textarea name="message" id="" cols="20s" rows="2"></textarea>
+                                    <input type="hidden" name="id_agent" value="{{ auth()->user()->id }}">
+                                    <input type="hidden" name="idClient" value="{{ $donnee->CT_Num }}">
+                                    <input type="hidden" name="ligne" value="{{ $donnee->CO_Nom }}">
+                                    <input type="hidden" name="telephone" value="{{ $donnee->CT_Telephone }}">
+                                    <input type="hidden" name="email" value="emailClient@gmail.com">
+                                    <input type="hidden" name="num_facture" value="{{ $donnee->EC_RefPiece }}">
+                                    <input type="hidden" name="libelle" value="{{ $donnee->EC_Intitule }}">
+                                    <input type="hidden" name="echeance" value="{{ $donnee->EC_Echeance }}">
+                                    <input type="hidden" name="debit" value="{{ $totalDebit }}">
+                                    <input type="hidden" name="credit" value="{{ $totalCredit }}">
+                                    <button type="submit" class="btn btn-primary">commentaire</button>
+                                </form>
+                                {{-- <button id="present-alert" class="btn btn-success imprimer-bouton mb-3">Click Me</button> --}}
+                            </td>                   
                         </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
-                    <button class="btn btn-success imprimer-bouton mb-3" onclick="imprimerPage()">Imprimer</button>
-                </tfoot>
+                    <div class="btn-group m-2">
+                        <button class="btn btn-success imprimer-bouton m-3"  onclick="imprimerPage()">Imprimer</button>
+                        <a href="/client_recouvre/{{auth()->user()->id}}" class="btn btn-warning imprimer-bouton m-3">Clients récouvrés</a>
+                        <a href="/client_rappel/{{auth()->user()->id}}" class="btn btn-info imprimer-bouton m-3">Client à rappeler</a>
+                    </div>
+                </tfoot>                
             </table>
+
+          
+
             <div class="mb-3 justify-content-center">
                 <?php
                     // Calcul du solde
@@ -146,6 +187,23 @@
             </div>
         </div>
     </div>
+
+
 </div>
  <script src="{{asset('Js/details.js')}}"></script>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script>
+// Récupérer le message d'erreur de la variable de session
+var errorMessage = "{{ session('message') }}";
+
+// Vérifier si le message d'erreur est présent
+if (errorMessage) {
+    // Afficher la popup avec le message d'erreur
+    alert(errorMessage);
+}
+ </script>
+
+<script>
+    
+</script>
 @endsection

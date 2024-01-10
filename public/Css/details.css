@@ -10,6 +10,7 @@
     .total-credit,
     .solde {
         font-weight: bold;
+        font-size: 20px;
     }
 
     .header {
@@ -128,7 +129,30 @@
 
     }
 
-
     .retard{
         font-weight: bold;
     }
+
+    .ligne-grise {
+        background-color: #cccaca; /* Couleur de fond grise */
+    }
+    
+
+/* Style pour le récouvrement */
+
+.alert-message {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+th{
+    text-align: center;
+}

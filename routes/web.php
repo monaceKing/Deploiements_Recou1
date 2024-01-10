@@ -33,10 +33,15 @@ Route::get('/time', [FauxController::class, 'time']);
 
 Route::get('/fusion', [MonController::class,'fusion']);
 
-// Route::get('fatou', [MonController::class,'peuplerPortefeuilleAvecCO_No']);
+Route::post('/enregistrer-ligne', [MonController::class,'enregistrerLigne'])->name('enregistrer_ligne');
 
+Route::post('/enregistrer_commentaire', [MonController::class,'enregistrer_commentaire'])->name('enregistrer_commentaire');
 
+Route::get('/verifier_donnees', [MonController::class,'verifierDonnees']);
 
+Route::get('/client_recouvre/{id}', [MonController::class,'client_recouvre']);
+
+Route::get('/client_rappel/{id}', [MonController::class,'client_rappel']);
 
 
 Auth::routes();
