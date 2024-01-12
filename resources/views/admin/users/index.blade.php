@@ -41,7 +41,8 @@
                                         @method('DELETE')
                                         <button class="btn btn-warning">Supprimer</button>
                                     </form>
-                                    @endcan
+                                    @endcan                
+                                    <a href="{{route('admin.users.show', $user->id)}}"><button class="btn btn-success">Factures</button></a>
                                 </td>
                             </tr>
                             @php

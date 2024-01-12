@@ -111,7 +111,8 @@ class MonController extends Controller
         return "Mise à jour de la colonne name de la table Portefeuille.";
     }
 
-    public function enregistrerLigne(Request $request){
+    public function enregistrerLigne(Request $request)
+    {
         $request->validate([
             'id_agent' => 'required',
             'idClient' => 'required',
@@ -135,7 +136,7 @@ class MonController extends Controller
         ->where('libelle', $libelle)
         ->first();
 
-        if ($existingRecord) {
+        if (!$existingRecord) {
             // Gérer le cas où un enregistrement avec le même 'libelle' existe déjà
           
         DB::transaction(function () use ($ligne, $idClient, $libelle, $email, $telephone, $num_facture, $credit, $debit, $id_agent) {
@@ -216,6 +217,9 @@ class MonController extends Controller
         $data = Commentaire::all()->where("id_agent", "=", $id);
         return view('rappels', compact('data'));
     }
+
+
+
 
 }
 

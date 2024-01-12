@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Portefeuille;
+use App\Models\Recouvrement;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
@@ -42,7 +44,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        $data = Recouvrement::all()->where("id_agent", "=", $user->id);
+        return view('factures_recouvrees', compact('data'));
     }
 
     /**
@@ -98,5 +101,15 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route("admin.users.index");
+    }
+
+    public function factures_recouvrees($idClient){
+        $efface = Recouvrement::where('idClient', $idClient)->first();
+
+        if ($efface) {
+            $efface->delete();
+        }
+    
+        return redirect()->back();
     }
 }

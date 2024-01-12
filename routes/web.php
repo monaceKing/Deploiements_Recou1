@@ -27,7 +27,6 @@ Route::get('/faux',[MonController::class, 'faux'])->name('faux');
 
 Route::get('/details/{CT_Num}', [MonController::class, 'details']);
 
-Route::get('/imprimer/{CT_Num}', [MonController::class, 'imprimer']);
 
 Route::get('/time', [FauxController::class, 'time']);
 
@@ -43,6 +42,7 @@ Route::get('/client_recouvre/{id}', [MonController::class,'client_recouvre']);
 
 Route::get('/client_rappel/{id}', [MonController::class,'client_rappel']);
 
+Route::get('/factures_recouvrees/{idClient}', [UserController::class, 'factures_recouvrees'])->name("factures_recouvrees");
 
 Auth::routes();
 
