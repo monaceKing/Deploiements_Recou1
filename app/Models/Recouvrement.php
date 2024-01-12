@@ -9,5 +9,15 @@ class Recouvrement extends Model
 {
     use \Illuminate\Database\Eloquent\Concerns\HasTimestamps;
     use HasFactory;
-    protected $table = 'recouvrements';
+    protected $fillable = [
+        "ligne",
+        "idClient",
+        "libelle",
+        "email",
+        "telephone",
+        "num_facture",
+        "credit",
+        "debit",
+        "id_agent"
+    ];
 }

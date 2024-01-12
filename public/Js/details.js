@@ -20,3 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const name = prompt('Message du client...');
 });
 });
+
+
+
+    // Fonction pour retourner à la page précédente en actualisant
+    function retourPagePrecedente() {
+        window.history.back();
+    }

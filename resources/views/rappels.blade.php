@@ -7,8 +7,11 @@
 
 <div id="moa">
     <div class="container my-3">
-        <h1 class="text-uppercase text-bg-primary">Liste des Clients à rappeler pour le récouvrement</h1>
+        
+        <h1 class="text-uppercase text-bg-primary text-center">Liste des Clients à rappeler pour le récouvrement</h1>
     </div>
+    <button class="btn btn-primary" onclick="retourPagePrecedente()">Retour</button>
+
     <div class="card">
         <div class="card-body">
             <table class="table table-bordered" id="myTable">

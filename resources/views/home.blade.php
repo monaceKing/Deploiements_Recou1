@@ -43,13 +43,13 @@
                                         <td>{{ $item->CT_Intitule }}</td>
                                         <td>{{ $item->CT_Telephone }}</td>
                                         {{-- <td>{{ $item->CT_EMail }}</td> --}}
-                                        <td>justeamour@gmail.com</td>
+                                        <td>{{ !empty($item->CT_EMail) ? $item->CT_EMail : 'emailClient@gmail.com' }}</td>
                                         <td>{{ $item->CO_Nom }}</td>
                                         <td>{{ $item->EC_Intitule }}</td>
                                         {{-- <td>{{ $item->EC_RefPiece }}</td> --}}
                     
                                         <td>
-                                            <a href="/details/{{$item->CT_Num}}" class="btn btn-primary" target="_blank">voir les factures</a>    
+                                            <a href="/details/{{$item->CT_Num}}" class="btn btn-primary" >voir les factures</a>    
                                         </td>
                     
                                         @php

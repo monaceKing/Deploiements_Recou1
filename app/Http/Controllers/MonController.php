@@ -112,6 +112,12 @@ class MonController extends Controller
     }
 
     public function enregistrerLigne(Request $request){
+        $request->validate([
+            'id_agent' => 'required',
+            'idClient' => 'required',
+        ]);
+
+        
         $id_agent = $request->input('id_agent');
         $idClient = $request->input('idClient');
         $ligne = $request->input('ligne');
@@ -123,6 +129,7 @@ class MonController extends Controller
         $debit = $request->input('debit');
 
 
+        $libelle = $request->input('libelle');
         // Vérifier si un enregistrement avec le même 'libelle' existe déjà
         $existingRecord = DB::table('recouvrements')
         ->where('libelle', $libelle)
@@ -130,24 +137,30 @@ class MonController extends Controller
 
         if ($existingRecord) {
             // Gérer le cas où un enregistrement avec le même 'libelle' existe déjà
-            return redirect()->back()->with('message', 'Un enregistrement avec le même libellé existe déjà.');
+          
+        DB::transaction(function () use ($ligne, $idClient, $libelle, $email, $telephone, $num_facture, $credit, $debit, $id_agent) {
+            DB::table('recouvrements')->insert([
+                'ligne' => $ligne,
+                'idClient' => $idClient,
+                'libelle' => $libelle,
+                'email' => $email,
+                'telephone' => $telephone,
+                'num_facture' => $num_facture,
+                'credit' => $credit,
+                'debit' => $debit,
+                'id_agent' => $id_agent,
+            ]);
+        });
+        
+    // Ajouter le libellé à la liste des libellés ajoutés
+    $addedLibelles = session('addedLibelles', []);
+    $addedLibelles[] = $libelle;
+    session(['addedLibelles' => $addedLibelles]);
+
+    return redirect()->back()->with('message', 'Enregistrement inséré avec succès.');
+    }  return redirect()->back()->with('message', 'Un enregistrement avec le même libellé existe déjà.');
         }
 
-
-        DB::table('recouvrements')->insert([
-            'ligne' => $ligne,
-            'idClient' => $idClient,
-            'libelle' => $libelle,
-            'email' => $email,
-            'telephone' => $telephone,
-            'num_facture' => $num_facture,
-            'credit' => $credit,
-            'debit' => $debit,
-            'id_agent' => $id_agent,
-        ]);
-
-        return redirect()->back()->with('message', 'Enregistrement inséré avec succès.');
-    }
 
 
 
@@ -181,6 +194,18 @@ class MonController extends Controller
 
         return redirect()->back()->with('message', 'Message ajouter.');
     }
+
+    // À chaque lancement de l'application
+    public function lancementApplication()
+    {
+        // Récupérer tous les libellés présents dans la base de données
+        $libellesMasques = DB::table('recouvrements')->pluck('libelle')->toArray();
+
+        // Mettre à jour la session pour refléter l'état de masquage
+        session(['addedLibelles' => $libellesMasques]);
+
+    }
+
 
     public function client_recouvre($id){
         $data = Recouvrement::all()->where("id_agent", "=", $id);

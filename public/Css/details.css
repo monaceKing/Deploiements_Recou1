@@ -156,3 +156,9 @@
 th{
     text-align: center;
 }
+
+
+/* Ajoutez cette classe pour masquer la ligne */
+.ligne-cachee {
+    display: none;
+}

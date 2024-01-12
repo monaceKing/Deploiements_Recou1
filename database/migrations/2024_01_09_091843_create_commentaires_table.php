@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('commentaires', function (Blueprint $table) {
             $table->id();
-            $table->string('ligne');
-            $table->string('idClient');
-            $table->string('libelle');
-            $table->string('email');
-            $table->string('telephone');
-            $table->string('num_facture');
-            $table->string('credit');
-            $table->string('debit');
-            $table->string('message');
+            $table->string('ligne')->nullable();
+            $table->string('idClient')->nullable();
+            $table->string('libelle')->nullable();
+            $table->string('email')->nullable();
+            $table->string('telephone')->nullable();
+            $table->string('num_facture')->nullable();
+            $table->string('credit')->nullable();
+            $table->string('debit')->nullable();
+            $table->string('message')->nullable();
             $table->string('id_agent');
             $table->timestamps();
         });

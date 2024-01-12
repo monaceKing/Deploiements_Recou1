@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
 <link rel="stylesheet" href="{{asset('Css/details.css')}}">
 
 
@@ -11,7 +10,8 @@
         <!-- Le contenu du message d'alerte sera inséré ici -->
     </div>
     
-
+    <button class="btn btn-primary" onclick="retourPagePrecedente()">Retour</button>
+    
     <div class="header">
         <div class="header-left">
             <p>Nom de la société: IGF</p>
@@ -28,7 +28,7 @@
             <div class="row justify-content-center rounded">
                 <div class="col-md-10">
                     @if(count($data) > 0)
-                    <table class="table table-secondary table-responsive rounded table-ct">
+                    <table class="table table-secondary table-ct">
                         <thead>
                             <tr>
                                 <th>Numéro</th>
@@ -36,7 +36,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr class="text-center justeM">
                                 <td>{{ $data[0]->CT_Num }}</td>
                                 <td>{{ $data[0]->CT_Intitule }}</td>
                             </tr>
@@ -76,7 +76,9 @@
                             $amount = $donnee->Ec_Montant;
                             $format = number_format($amount, 0, ' ', ' ');
                         @endphp
-                        <tr  data-ct-num="{{ $donnee->CT_Num }}">
+                            @if(!in_array($donnee->EC_Intitule, session('addedLibelles', [])))
+
+                        <tr  data-ct-num="{{ $donnee->CT_Num }}" class="text-center">
                             <td>{{ $donnee->CO_Nom }}</td>
                             {{-- <td>{{ $donnee->CT_Intitule }}</td> --}}
                             <td>{{ $donnee->CT_Telephone }}</td>
@@ -160,9 +162,10 @@
                                     <input type="hidden" name="credit" value="{{ $totalCredit }}">
                                     <button type="submit" class="btn btn-primary">commentaire</button>
                                 </form>
-                                {{-- <button id="present-alert" class="btn btn-success imprimer-bouton mb-3">Click Me</button> --}}
                             </td>                   
                         </tr>
+
+                    @endif
                     @endforeach
                 </tbody>
                 <tfoot>
