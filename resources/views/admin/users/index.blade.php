@@ -4,11 +4,14 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+            <div class="my-3">
+                <a href="/ajoute_user" class="btn btn-info">Ajouter un utilisateur</a>
+            </div>
             <div class="card">
                 <div class="card-header">List des Agents</div>
 
                 <div class="card-body">
-                    <table class="table table-striped">
+                    <table class="table table-striped text-center">
                         <thead>
                             <tr>
                             <th>#</th>
@@ -32,17 +35,19 @@
                                 <td> {{ implode(' / ',$user->portefeuilles()->get()->pluck('name')->toArray()) }} </td>
                                 <td>
                                     @can('edit-users') 
-                                    <a href="{{route('admin.users.edit', $user->id)}}"><button class="btn btn-primary">Editer</button></a>
+                                    <a href="{{route('admin.users.edit', $user->id)}}"><button class="btn btn-success">Editer</button></a>
                                     @endcan
                                     {{-- permet de masquer le lien vers les utilisateurs si c'est pas un admin connecté --}}
+                                                    
+                                    <a href="{{route('admin.users.show', $user->id)}}"><button class="btn btn-warning">Factures</button></a>
+
                                     @can('delete-users') 
                                     <form action="{{route('admin.users.destroy', $user->id)}}" method="post" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-warning">Supprimer</button>
+                                        <button class="btn btn-danger">Supprimer</button>
                                     </form>
-                                    @endcan                
-                                    <a href="{{route('admin.users.show', $user->id)}}"><button class="btn btn-success">Factures</button></a>
+                                    @endcan
                                 </td>
                             </tr>
                             @php

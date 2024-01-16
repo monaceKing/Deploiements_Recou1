@@ -33,7 +33,7 @@
                             $amount = $donnee->Ec_Montant;
                             $format = number_format($amount, 0, ' ', ' ');
                         @endphp
-                        <tr  data-ct-num="{{ $donnee->CT_Num }}">
+                        <tr  data-ct-num="{{ $donnee->CT_Num }}" class="text-center">
                             <td>{{ $donnee->ligne }}</td>
                             <td>{{ $donnee->idClient }}</td>
                             <td>{{ $donnee->libelle }}</td>
@@ -42,8 +42,8 @@
                             <td>{{ $donnee->num_facture }}</td>             
                             <td>{{ $donnee->credit }}</td>             
                             <td>{{ $donnee->debit }}</td>      
-                            <td>
-                                <a href="/factures_recouvrees/{{$donnee->idClient}}" class="btn btn-warning">Supprimer</a>
+                            <td >
+                                <a href="/factures_recouvrees/{{$donnee->idClient}}" class="btn btn-danger">Supprimer</a>
                             </td>       
                         </tr>
                     @endforeach
