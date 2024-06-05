@@ -1,7 +1,6 @@
 @extends('layouts.app')
-
 @section('content')
-<div class="">
+<div class="mt-5">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -29,7 +28,7 @@
                                 $totalCredit = 0;
                                 $currentSolde = 0;
                             @endphp
-                    
+
                             @foreach($data as $item)
                                 @if($currentCTNum !== $item->CT_Num)
                                     {{-- Fermer la ligne précédente avant d'ouvrir une nouvelle --}}
@@ -37,7 +36,7 @@
                                         <td>{{ $totalDebit - $totalCredit }}</td>
                                         </tr>
                                     @endif
-                    
+
                                     {{-- Ouvrir une nouvelle ligne --}}
                                     <tr>
                                         <td>{{ $item->CT_Intitule }}</td>
@@ -47,18 +46,18 @@
                                         <td>{{ $item->CO_Nom }}</td>
                                         <td>{{ $item->EC_Intitule }}</td>
                                         {{-- <td>{{ $item->EC_RefPiece }}</td> --}}
-                    
+
                                         <td>
-                                            <a href="/details/{{$item->CT_Num}}" class="btn btn-primary" >voir les factures</a>    
+                                            <a href="/details/{{$item->CT_Num}}" class="btn btn-primary" >voir les factures</a>
                                         </td>
-                    
+
                                         @php
                                             // Réinitialise les totaux pour la nouvelle facture
                                             $totalDebit = 0;
                                             $totalCredit = 0;
                                             $currentSolde = 0;
                                             $currentCTNum = $item->CT_Num;
-                    
+
                                             // Vérifie le EC_sens pour déterminer le débit ou le crédit
                                             if ($item->EC_sens > 0) {
                                                 $totalCredit += $item->Ec_Montant;
@@ -79,7 +78,7 @@
                                     @endphp
                                 @endif
                             @endforeach
-                    
+
                             {{-- Fermer la dernière ligne --}}
                             <td>{{ $totalDebit - $totalCredit }}</td>
                             </tr>

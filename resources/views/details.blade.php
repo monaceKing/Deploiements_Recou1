@@ -9,13 +9,13 @@
     <div id="alertMessage" class="alert-message">
         <!-- Le contenu du message d'alerte sera inséré ici -->
     </div>
-    
-    <button class="btn btn-primary" onclick="retourPagePrecedente()">Retour</button>
-    
+
+    <button class="btn btn-primary imprimer-bouton" onclick="retourPagePrecedente()">Retour</button>
+
     <div class="header">
         <div class="header-left">
             <p>Nom de la société: IGF</p>
-            <p>Période: Janvier 2023</p>
+            <p>Période: Janvier - Décembre 2024</p>
         </div>
         <div class="header-right">
             <p>Extrait de compte compte tiers</p>
@@ -36,9 +36,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center justeM">
-                                <td>{{ $data[0]->CT_Num }}</td>
-                                <td>{{ $data[0]->CT_Intitule }}</td>
+                            <tr>
+                                <td class="text-center justeM">{{ $data[0]->CT_Num }}</td>
+                                <td class="text-center justeM">{{ $data[0]->CT_Intitule }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -145,7 +145,7 @@
                                     <input type="hidden" name="credit" value="{{ $totalCredit }}">
                                     <button type="submit" class="btn btn-primary">Recouvre</button>
                                 </form>
-                            </td>     
+                            </td>
                             <td>
                                 <form action="{{ route('enregistrer_commentaire') }}"  method="post" class="mx-5">
                                     @csrf
@@ -162,7 +162,7 @@
                                     <input type="hidden" name="credit" value="{{ $totalCredit }}">
                                     <button type="submit" class="btn btn-primary">commentaire</button>
                                 </form>
-                            </td>                   
+                            </td>
                         </tr>
 
                     @endif
@@ -174,15 +174,15 @@
                         <a href="/client_recouvre/{{auth()->user()->id}}" class="btn btn-warning imprimer-bouton m-3">Clients récouvrés</a>
                         <a href="/client_rappel/{{auth()->user()->id}}" class="btn btn-info imprimer-bouton m-3">Client à rappeler</a>
                     </div>
-                </tfoot>                
+                </tfoot>
             </table>
 
-          
+
 
             <div class="mb-3 justify-content-center">
                 <?php
                     // Calcul du solde
-                    $solde = $totalDebit - $totalCredit;    
+                    $solde = $totalDebit - $totalCredit;
                 ?>
                 <span class="total-debit">Total Débit : {{ number_format($totalDebit, 0, ' ', ' ') }}</span>
                 <span class="total-credit">Total Crédit : {{ number_format($totalCredit, 0, ' ', ' ') }}</span>
@@ -207,6 +207,6 @@ if (errorMessage) {
  </script>
 
 <script>
-    
+
 </script>
 @endsection
